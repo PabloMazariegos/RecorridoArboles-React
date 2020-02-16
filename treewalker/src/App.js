@@ -5,7 +5,7 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				
+				<p>learn react</p>
 			</div>
 		);
 	}
