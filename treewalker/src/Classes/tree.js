@@ -5,25 +5,16 @@ class tree {
 		this.root = null;
 	}
 
-	/**
-	 * Insert value to a tree instance
-	 * @param {Number} value -value to insert
-	 */
 	addValue(value) {
+		let GraphvizData = "";
 		var newNode = new Node(value);
 
 		if (this.root === null) {
 			this.root = newNode;
 		} else {
-			//logic to insert nodes in current tree
-			//----------------------------------------------------------------------
 			let currentTree = this.root;
 			while (currentTree) {
 				if (parseInt(newNode.data) < parseInt(currentTree.data)) {
-					/* 
-						if left child of current tree in any level is null assing the child,
-						only if newNode.data is LESS than the current node.data
-					*/
 					if (currentTree.left === null) {
 						currentTree.left = newNode;
 						break;
@@ -31,10 +22,6 @@ class tree {
 						currentTree = currentTree.left;
 					}
 				} else if (parseInt(newNode.data) > parseInt(currentTree.data)) {
-					/* 
-						if right child of current tree in any level is null assing the child,
-						only if newNode.data is GREATER than the current node.data
-					*/
 					if (currentTree.right === null) {
 						currentTree.right = newNode;
 						break;
@@ -44,14 +31,26 @@ class tree {
 				}
 			}
 		}
+
+		let setGraphvizData = node => {
+			if (node) {
+				if (node.left) GraphvizData += `${node.data} -> ${node.left.data};\n`;
+				if (node.right) GraphvizData += `${node.data} -> ${node.right.data};\n`;
+
+				setGraphvizData(node.left);
+				setGraphvizData(node.right);
+			}
+		};
+
+		setGraphvizData(this.root);
+		if (GraphvizData === "") {
+			GraphvizData += `${this.root.data};`;
+		}
+
+		return GraphvizData;
 	}
 
-	/**
-	 * Return a list of values of every level in any direction
-	 * @param {String} direction -Direction of traverse, "right" , "left"
-	 * @returns {String[]} - Array with the data of each level of the tree instance
-	 */
-	levelTraverse(direction) {
+	levelTraverse() {
 		if (!this.root) return [];
 		let array = [];
 
@@ -66,8 +65,8 @@ class tree {
 				const leftIndex = 2 * index - 1;
 				const rightIndex = 2 * index;
 
-				search(node.left, level + 1, leftIndex);
 				search(node.right, level + 1, rightIndex);
+				search(node.left, level + 1, leftIndex);
 			} else {
 				return null;
 			}
