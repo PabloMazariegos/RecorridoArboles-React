@@ -3,6 +3,11 @@ import tree from "Classes/tree";
 
 // COMPONENTS
 import Graph from "Components/treegraph/treegraph";
+import {
+	ToastsContainer,
+	ToastsStore,
+	ToastsContainerPosition
+} from "react-toasts";
 
 // Instance of binaryTree
 let binaryTree = new tree();
@@ -11,27 +16,53 @@ class treecontainer extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			tree: ""
+			tree: "",
+			directionText: "Izquierda a Derecha",
+			direction: "izq"
 		};
 		//binding new methods
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleDirection = this.handleDirection.bind(this);
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
 
-		// var to save the new value of the binaryTree
+		// validar que se esté ingresando un valor diferente a vacio
 		let Inputvalue = document.getElementById("valueInput");
-		let treeState = binaryTree.addValue(Inputvalue.value);
-		console.log(treeState);
-		this.setState({
-			tree: treeState
-		});
+		if (Inputvalue.value === "") {
+			ToastsStore.error("Ingrese un valor numérico");
+		} else {
+			let treeState = binaryTree.addValue(Inputvalue.value);
+			this.setState({
+				tree: treeState
+			});
+			ToastsStore.success("Nodo agregado Exitosamente!");
+		}
 
 		Inputvalue.value = "";
 	}
 
+	handleDirection(event) {
+		event.preventDefault();
+
+		if (this.state.directionText === "Izquierda a Derecha") {
+			this.setState({
+				directionText: "Derecha a Izquierda",
+				direction: "der"
+			});
+		} else {
+			this.setState({
+				directionText: "Izquierda a Derecha",
+				direction: "izq"
+			});
+		}
+
+		ToastsStore.info("Recorridos de " + this.state.directionText);
+	}
+
 	render() {
+		console.log(binaryTree.PrimeroAnchura());
 		return (
 			<React.Fragment>
 				<div className="container-fluid">
@@ -53,8 +84,15 @@ class treecontainer extends React.Component {
 									Primero Anchura
 								</button>
 
-								<button className="btn btn-warning btn-sm ">
+								<button className="btn btn-warning btn-sm mr-2">
 									Primero Profundidad
+								</button>
+
+								<button
+									className="btn btn-outline-dark btn-sm mr-2"
+									onClick={this.handleDirection}
+								>
+									{this.state.directionText}
 								</button>
 							</form>
 						</div>
@@ -66,6 +104,11 @@ class treecontainer extends React.Component {
 						</div>
 						<div className="col-md-6" id="steps-tree"></div>
 					</div>
+
+					<ToastsContainer
+						position={ToastsContainerPosition.TOP_RIGHT}
+						store={ToastsStore}
+					/>
 				</div>
 			</React.Fragment>
 		);

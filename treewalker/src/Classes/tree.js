@@ -28,6 +28,8 @@ class tree {
 					} else {
 						currentTree = currentTree.right;
 					}
+				} else {
+					currentTree = null; //para evitar loop infinito
 				}
 			}
 		}
@@ -50,32 +52,63 @@ class tree {
 		return GraphvizData;
 	}
 
-	levelTraverse() {
+	PrimeroProfundidad(direccion) {
 		if (!this.root) return [];
 		let array = [];
 
-		let search = (node, level, index) => {
+		let Recorrer = node => {
 			if (node) {
-				const count = Math.pow(2, level - 1);
-				if (array.length < level) {
-					array.push(Array(count).fill(""));
+				array.push(node.data);
+				if (direccion === "der") {
+					Recorrer(node.right);
+					Recorrer(node.left);
+				} else {
+					Recorrer(node.left);
+					Recorrer(node.right);
 				}
-				var arr = array[level - 1];
-				arr[index - 1] = node.data;
-				const leftIndex = 2 * index - 1;
-				const rightIndex = 2 * index;
-
-				search(node.right, level + 1, rightIndex);
-				search(node.left, level + 1, leftIndex);
 			} else {
-				return null;
+				return;
 			}
 		};
+		Recorrer(this.root);
+		return array;
+	}
 
-		search(this.root, 1, 1);
+	PrimeroAnchura(direccion) {
+		if (!this.root) return [];
+		let cola = [];
+		let array = [];
+		let nodoActual = this.root;
 
+		cola.push(nodoActual);
+		while (cola.length > 0) {
+			nodoActual = cola.shift();
+			if (nodoActual) {
+				array.push(nodoActual.data);
+				if (direccion === "der") {
+					if (nodoActual.right) cola.push(nodoActual.right);
+					if (nodoActual.left) cola.push(nodoActual.left);
+				} else {
+					if (nodoActual.left) cola.push(nodoActual.left);
+					if (nodoActual.right) cola.push(nodoActual.right);
+				}
+			} else {
+				return;
+			}
+		}
 		return array;
 	}
 }
 
 export default tree;
+
+/*
+10 -> 5;
+10 -> 25;
+25 -> 15;
+25 -> 30;
+
+10 [style=filled color=dodgerblue3];
+25 [style=filled color=dodgerblue3];
+15 [style=filled color=dodgerblue3];
+*/
