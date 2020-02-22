@@ -9,6 +9,9 @@ import {
 	ToastsContainerPosition
 } from "react-toasts";
 
+//STYLES
+import "./treecontainer.css";
+
 // Instance of binaryTree
 let binaryTree = new tree();
 
@@ -24,6 +27,7 @@ class treecontainer extends React.Component {
 		//binding new methods
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleDirection = this.handleDirection.bind(this);
+		this.handleEliminar = this.handleEliminar.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -115,7 +119,21 @@ class treecontainer extends React.Component {
 			}, 2000);
 		} else {
 			ToastsStore.error("Arbol vacío, ingrese un valor");
+			document.getElementById("spinnerAnchura").style.display = "none";
+			document.getElementById("spinnerProfundidad").style.display = "none";
 		}
+	}
+
+	handleEliminar(event) {
+		event.preventDefault();
+		binaryTree = null;
+		binaryTree = new tree();
+		this.setState({
+			tree: "",
+			directionText: "Izquierda a Derecha",
+			direction: "izq",
+			recorrido: ""
+		});
 	}
 
 	render() {
@@ -125,56 +143,70 @@ class treecontainer extends React.Component {
 				<div className="container-fluid">
 					<div className="row mt-3">
 						<div className="col-md-12">
-							<form className="form-inline" onSubmit={this.handleSubmit}>
-								<input
-									id="valueInput"
-									type="number"
-									placeholder="Valor"
-									className="form-control form-control-sm mr-2"
-								/>
+							<form
+								className="form-inline arbol-bar"
+								onSubmit={this.handleSubmit}
+							>
+								<div className="arbol-bar-left">
+									<input
+										id="valueInput"
+										type="number"
+										placeholder="Valor"
+										className="form-control form-control-sm mr-2"
+									/>
 
-								<button className="btn btn-success btn-sm my-2 my-sm-0 mr-4">
-									Agregar
-								</button>
+									<button className="btn btn-success btn-sm my-2 my-sm-0 mr-4">
+										Agregar
+									</button>
 
-								<button
-									className="btn btn-primary btn-sm mr-2"
-									onClick={e => {
-										this.handleRecorrido(e, "anchura");
-									}}
-								>
-									<span
-										className="spinner-border spinner-border-sm"
-										role="status"
-										aria-hidden="true"
-										id="spinnerAnchura"
-										style={{ display: "none" }}
-									></span>
-									Primero Anchura
-								</button>
+									<button
+										className="btn btn-danger btn-sm my-2 my-sm-0 mr-4"
+										onClick={this.handleEliminar}
+									>
+										Eliminar Arbol
+									</button>
+								</div>
 
-								<button
-									className="btn btn-warning btn-sm mr-2"
-									onClick={e => {
-										this.handleRecorrido(e, "profundidad");
-									}}
-								>
-									<span
-										className="spinner-border spinner-border-sm"
-										role="status"
-										aria-hidden="true"
-										id="spinnerProfundidad"
-										style={{ display: "none" }}
-									></span>
-									Primero Profundidad
-								</button>
+								<div className="arbol-bar-right">
+									<button
+										className="btn btn-primary btn-sm mr-2"
+										onClick={e => {
+											this.handleRecorrido(e, "anchura");
+										}}
+									>
+										<span
+											className="spinner-border spinner-border-sm"
+											role="status"
+											aria-hidden="true"
+											id="spinnerAnchura"
+											style={{ display: "none" }}
+										></span>
+										Primero Anchura
+									</button>
 
-								<button
-									className="btn btn-outline-dark btn-sm mr-4"
-									onClick={this.handleDirection}
-								>
-									{this.state.directionText}
-								</button>
+									<button
+										className="btn btn-warning btn-sm mr-2"
+										onClick={e => {
+											this.handleRecorrido(e, "profundidad");
+										}}
+									>
+										<span
+											className="spinner-border spinner-border-sm"
+											role="status"
+											aria-hidden="true"
+											id="spinnerProfundidad"
+											style={{ display: "none" }}
+										></span>
+										Primero Profundidad
+									</button>
+
+									<button
+										className="btn btn-outline-dark btn-sm mr-2"
+										onClick={this.handleDirection}
+									>
+										{this.state.directionText}
+									</button>
+								</div>
 							</form>
 						</div>
 					</div>

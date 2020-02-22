@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 class navbar extends React.Component {
 	render() {
 		return (
-			<nav className="navbar navbar-expand navbar-dark bg-dark">
+			<nav className="navbar navbar-expand navbar-dark bg-dark ">
 				<span className="navbar-brand">
 					<img
 						src="https://s3.us-east-2.amazonaws.com/upload-icon/uploads/icons/png/8575147831553750379-256.png"
@@ -15,18 +15,17 @@ class navbar extends React.Component {
 					/>
 				</span>
 				<div className="collapse navbar-collapse">
-					<div className="navbar-nav">
+					<div
+						className="navbar-nav d-flex justify-content-between"
+						style={{ width: "100%" }}
+					>
 						<Link to="/" className="nav-item nav-link active">
 							Recorrido
 						</Link>
 
-						<Link to="/config" className="nav-item nav-link">
-							Configuración
-						</Link>
-
-						<Link to="/about" className="nav-item nav-link">
-							Acerca de
-						</Link>
+						<p className="nav-item nav-link m-0 text-white ">
+							Pablo Moises Mazariegos Pinto
+						</p>
 					</div>
 				</div>
 			</nav>
