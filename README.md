@@ -1,2 +1,2 @@
-# TreeWalker
-Recorrido de arboles con nodejs y react
+# Recorrido Arboles
+Recorrido de arboles con js y react
