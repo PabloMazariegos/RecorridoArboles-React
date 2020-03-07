@@ -137,7 +137,6 @@ class treecontainer extends React.Component {
 	}
 
 	render() {
-		console.log(binaryTree.PrimeroAnchura());
 		return (
 			<React.Fragment>
 				<div className="container-fluid">

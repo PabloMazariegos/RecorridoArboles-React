@@ -22,10 +22,6 @@ class navbar extends React.Component {
 						<Link to="/" className="nav-item nav-link active">
 							Recorrido
 						</Link>
-
-						<p className="nav-item nav-link m-0 text-white ">
-							Pablo Moises Mazariegos Pinto
-						</p>
 					</div>
 				</div>
 			</nav>
